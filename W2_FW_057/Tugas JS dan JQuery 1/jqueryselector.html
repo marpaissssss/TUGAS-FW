@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        #paragraf {
+            width: 600px; height: 80px; background-color: grey;
+        line-height: 80px; text-align: center; font-size: 30px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Selector</title>
+</head>
+<body>
+    <p id="paragraf">Paragraf Pertama</p>
+    <script>
+        $(document).ready(function(){
+
+            $("#paragraf").mouseenter(function(){
+            $("#paragraf").css("background-color", "green");
+        });
+
+        $("#paragraf").mouseleave(function(){
+            $("#paragraf").css("background-color", "grey");
+        });
+
+        $("#paragraf").click(function(){
+            $("#paragraf").css("border", "solid 2px black");
+        });
+
+         $("#paragraf").dblclick(function(){
+            $("#paragraf").css("border", "");
+        });
+    });
+    </script>
+</body>
+</html>

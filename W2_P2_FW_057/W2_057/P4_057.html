@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Pengulangan</title>
+</head>
+<body>
+    <h1>Kalkulator Pengulangan - P4_057</h1>
+
+    <label for="inputArray">Masukkan array angka (pisahkan dengan koma):</label>
+    <input type="text" id="inputArray" placeholder="Contoh: 10, 20, 30, 40, 50">
+    <button onclick="hitungDanTampilkan()">Hitung</button>  
+
+    <div id="result"></div>
+
+    <script>
+           const hitungRataRata = (arr) => {
+            const total = arr.reduce((acc, val) => acc + val, 0);
+             return total / arr.length;
+            };
+
+            const hitungLebihBesarDariRataRata = (arr) => {
+                const rataRata = hitungRataRata(arr); 
+                const angkaDiAtasRataRata = arr.filter(val => val > rataRata);
+                return angkaDiAtasRataRata.length;
+            };
+
+            function hitungDanTampilkan() {
+                const input = document.getElementById('inputArray').value;
+                const array = input.split(',').map(num => parseFloat(num.trim()));
+
+                 if (array.some(isNaN)) {
+                alert("Masukkan array yang valid dengan angka yang benar.");
+                return;
+            }
+
+                const rataRata = hitungRataRata(array);
+                const jumlahLebihBesar = hitungLebihBesarDariRataRata(array);
+
+                document.getElementById('result').innerHTML = `
+                    <p>Array Angka: [${array.join(',')}]</p>
+                    <p>Rata-Rata: ${rataRata.toFixed(2)}</p>
+                    <p>Jumlah Angka di Atas Rata-Rata: ${jumlahLebihBesar}</p>
+                `;
+            }
+    </script>
+</body>
+</html>

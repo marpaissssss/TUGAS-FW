@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <title>Jquery</title>
+</head>
+<body>
+    <p>Paragraf Pertama</p>
+    <p>Paragraf Kedua</p>
+    <p>Paragraf Ketiga</p>
+
+    <p id="namaid">Paragraf Keempat</p>
+    <p class="namaclass">Paragraf Kelima</p>
+
+    <p id="namaidlain">Paragraf Keenam</p>
+    <p class="namaclasslain">Paragraf Ketujuh</p>
+
+<script>
+    $("p").css("background-color", "yellow");
+    $("#namaid").css("background-color", "green");
+    $(".namaclass").css("background-color", "red");
+    $("#namaidlain,.namaclasslain").css("background-color", "blue");
+</script>
+</body>
+</html>

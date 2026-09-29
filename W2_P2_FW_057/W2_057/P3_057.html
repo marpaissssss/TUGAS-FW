@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Daftar Tugas - P3_057</h1>
+
+    <input type="text" id="inputTugas" placeholder="Masukkan Tugas">
+    <button onclick="tambahTugas()">Tambah Daftar Tugas</button>
+
+    <button onclick="tampilkanTugas()">Tampilkan Daftar Tugas</button>
+
+    <ul id="listTugas" style="display: none;"></ul>
+
+    <script>
+        let daftarTugas = [];
+        function tambahTugas() {
+            const input = document.getElementById('inputTugas');
+            const tugas = input.value.trim();
+
+            if (tugas){
+                daftarTugas.push(tugas);
+                input.value = '';
+                alert('Tugas berhasil ditambahkan!');
+            } else {
+                alert('Masukkan tugas yang valid!');
+            }
+        }
+
+        function tampilkanTugas() {
+            const listTugas = document.getElementById('listTugas');
+            listTugas.innerHTML = '';
+
+            if (daftarTugas.length === 0) {
+                listTugas.innerHTML = '<li>Tidak ada tugas</li>';
+            } else {
+                daftarTugas.forEach((tugas, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = tugas;
+                    const btnHapus = document.createElement('button');
+                    btnHapus.textContent = 'Hapus';
+                    btnHapus.style.marginLeft = '10px';
+                    btnHapus.onclick = () => hapusTugas(index + 1);
+                    li.appendChild(btnHapus);
+                    listTugas.appendChild(li);
+                });
+            }
+            listTugas.style.display = 'block';
+        }   
+
+        function hapusTugas(indeks) {
+            if (indeks > 0 && indeks <= daftarTugas.length) {
+                const tugasTerhapus = daftarTugas.splice(indeks - 1, 1);
+                console.log(`Tugas "${tugasTerhapus}" berhasil dihapus!`);
+                alert(`Tugas "${tugasTerhapus}" berhasil dihapus!`);
+                tampilkanTugas();
+            }   else {
+                alert("Indeks tugas tidak valid!");
+            }   
+        }
+    </script>
+</body>
+</html>
