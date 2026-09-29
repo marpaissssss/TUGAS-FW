@@ -4,33 +4,171 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar Tugas PBF</title>
+    <style>
+        :root {
+            --bg: #eef2f7;
+            --surface: #ffffff;
+            --ink: #1b2433;
+            --muted: #64708a;
+            --line: #dbe2ee;
+            --accent: #2f5bea;
+            --accent-soft: #e7edff;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f1420;
+                --surface: #182031;
+                --ink: #e8edf7;
+                --muted: #93a0ba;
+                --line: #27324a;
+                --accent: #7d9bff;
+                --accent-soft: #212c4d;
+            }
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 48px 20px 64px;
+            background: var(--bg);
+            color: var(--ink);
+            font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+            line-height: 1.5;
+        }
+        .wrap { max-width: 860px; margin: 0 auto; }
+        header { margin-bottom: 32px; }
+        h1 {
+            margin: 0 0 6px;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            letter-spacing: -0.02em;
+        }
+        header p { margin: 0; color: var(--muted); }
+
+        .folder {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 22px 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 24px rgba(20, 30, 60, 0.06);
+        }
+        .folder-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--line);
+        }
+        .folder-head h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .folder-head h2::before {
+            content: "";
+            width: 10px; height: 10px;
+            border-radius: 3px;
+            background: var(--accent);
+        }
+        .count {
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: var(--accent-soft);
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+        .links {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 10px;
+        }
+        .links a {
+            display: block;
+            height: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            color: var(--ink);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: border-color .15s, background .15s;
+        }
+        .links a small {
+            display: block;
+            margin-top: 2px;
+            font-weight: 400;
+            font-size: 0.78rem;
+            color: var(--muted);
+            word-break: break-all;
+        }
+        .links a:hover {
+            border-color: var(--accent);
+            background: var(--accent-soft);
+        }
+        .links a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.85rem;
+            margin-top: 28px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Daftar Halaman Tugas FW Ammar Faiz Zahran</h1>
-    
-    <strong>Folder W2_FW_057</strong>
-    <ul>
-        <li>
-            <a href="../W2_FW_057/Tugas JS dan JQuery 1/jqueryselector.html">Latihan JQuery.html</a>
-            <a href="../W2_FW_057/Tugas JS dan JQuery 1/jquerywak.html">Latihan JavaScript.html</a>
-            <a href="../W2_FW_057/Tugas JS dan JQuery 1/belajar_js_again.html">Belajar JavaScript Lagi.html</a>
-            <a href="../W2_FW_057/Tugas JS dan JQuery 1/T1_057.html">Tugas 1.html</a>
-            <a href="../W2_FW_057/Tugas JS dan JQuery 1/P2(peghitungusia).html">Program Hitung Usia.html</a>
-            <a href="../W2_FW_057/Tugas JS dan JQuery 1/P1(kalkulator).html">Program Kalkulator.html</a>
-        </li>
-        <li>
-            <strong>Folder W2</strong>
-            <ul>
-                <li><a href="../W2/P3_057.html">T3_057.html</a></li>
-                <li><a href="../W2/P4_057.html">T4_057.html</a></li>
+    <div class="wrap">
+        <header>
+            <h1>Daftar Halaman Tugas</h1>
+            <p>FW Ammar Faiz Zahran &middot; Pemrograman Berbasis Framework (PBF)</p>
+        </header>
+
+        <section class="folder">
+            <div class="folder-head">
+                <h2>Folder W2_FW_057</h2>
+                <span class="count">6 halaman</span>
+            </div>
+            <ul class="links">
+                <li><a href="../W2_FW_057/Tugas JS dan JQuery 1/jqueryselector.html">Latihan JQuery<small>jqueryselector.html</small></a></li>
+                <li><a href="../W2_FW_057/Tugas JS dan JQuery 1/jquerywak.html">Latihan JavaScript<small>jquerywak.html</small></a></li>
+                <li><a href="../W2_FW_057/Tugas JS dan JQuery 1/belajar_js_again.html">Belajar JavaScript Lagi<small>belajar_js_again.html</small></a></li>
+                <li><a href="../W2_FW_057/Tugas JS dan JQuery 1/T1_057.html">Tugas 1<small>T1_057.html</small></a></li>
+                <li><a href="../W2_FW_057/Tugas JS dan JQuery 1/P2(peghitungusia).html">Program Hitung Usia<small>P2(peghitungusia).html</small></a></li>
+                <li><a href="../W2_FW_057/Tugas JS dan JQuery 1/P1(kalkulator).html">Program Kalkulator<small>P1(kalkulator).html</small></a></li>
             </ul>
-        </li>
-                <li>
-            <strong>Folder W1</strong>
-            <ul>
-                <li><a href="../W1/T2_057.html">T2_057.html</a></li>
+        </section>
+
+        <section class="folder">
+            <div class="folder-head">
+                <h2>Folder W2</h2>
+                <span class="count">2 halaman</span>
+            </div>
+            <ul class="links">
+                <li><a href="../W2/P3_057.html">Tugas 3<small>P3_057.html</small></a></li>
+                <li><a href="../W2/P4_057.html">Tugas 4<small>P4_057.html</small></a></li>
             </ul>
-        </li>
-    </ul>
+        </section>
+
+        <section class="folder">
+            <div class="folder-head">
+                <h2>Folder W1</h2>
+                <span class="count">1 halaman</span>
+            </div>
+            <ul class="links">
+                <li><a href="../W1/T2_057.html">Tugas 2<small>T2_057.html</small></a></li>
+            </ul>
+        </section>
+
+        <footer>Ammar Faiz Zahran &middot; 057</footer>
+    </div>
 </body>
 </html>
