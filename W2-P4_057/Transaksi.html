@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Transaksi</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Tahoma', sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .table-container {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: white;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .table thead th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        .form-container {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background-color: white;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        .btn:disabled,
+        .btn.disabled {
+            background-color: #adb5bd !important;
+            border-color: #adb5bd !important;
+            color: #f8f9fa !important;
+            opacity: 1;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="P7_057.html">Data Produk</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Data Transaksi</a>
+            </li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="table-container">
+            <h1>Data Transaksi</h1>
+            <button id="addDataBtn" class="btn btn-primary mb-3">+ Add Transaksi</button>
+            <table id="transaksi-table" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th width="10%">ID Transaksi</th>
+                        <th>Tanggal</th>
+                        <th>ID Produk</th>
+                        <th>Jumlah</th>
+                        <th>Total Harga</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="7" class="text-center">Data transaksi akan muncul di sini...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-container" id="formContainer">
+            <h3>Tambah Transaksi Baru</h3>
+            <form id="addTransaksiForm">
+                <div class="mb-3">
+                    <label for="idProduk" class="form-label">ID Produk</label>
+                    <input type="number" class="form-control" id="idProduk" required>
+                </div>
+                <div class="mb-3">
+                    <label for="jumlah" class="form-label">Jumlah</label>
+                    <input type="number" class="form-control" id="jumlah" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-success">Submit</button>
+                <button type="button" id="cancelBtn" class="btn btn-secondary">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const readUrl = 'https://api.melangkah.my.id/transaksi/read.php';
+        const createUrl = 'https://api.melangkah.my.id/transaksi/create.php';
+        const updateUrl = 'https://api.melangkah.my.id/transaksi/update.php';
+        const produkDetailUrl = 'https://api.melangkah.my.id/produk/detail.php';
+        const produkUpdateUrl = 'https://api.melangkah.my.id/produk/update.php';
+
+        const tableBody = document.querySelector('#transaksi-table tbody');
+
+        function formatRupiah(angka) {
+            return 'Rp' + Number(angka).toLocaleString('id-ID');
+        }
+
+        // READ
+        async function getTransaksi() {
+            try {
+                const response = await fetch(readUrl);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const data = await response.json();
+                tableBody.innerHTML = '';
+
+                if (!Array.isArray(data) || data.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Belum ada data transaksi.</td></tr>';
+                    return;
+                }
+
+                data.forEach(trx => {
+                    const isSelesai = trx.status_transaksi === 'Selesai';
+                    trx.tanggal_transaksi = new Date(trx.tanggal_transaksi).toLocaleDateString('id-ID', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                    });
+                    
+                    tableBody.innerHTML += `
+                        <tr>
+                            <td>${trx.id_transaksi}</td>
+                            <td>${trx.tanggal_transaksi}</td>
+                            <td>${trx.id_produk}</td>
+                            <td style="text-align: right;">${trx.jumlah}</td>
+                            <td style="text-align: right;">${formatRupiah(trx.total_harga)}</td>
+                            <td>${trx.status_transaksi}</td>
+                            <td class="text-center">
+                                <button class="btn btn-sm ${isSelesai ? 'btn-secondary' : 'btn-warning'}"
+                                    onclick="updateStatus(${trx.id_transaksi})"
+                                    ${isSelesai ? 'disabled' : ''}>
+                                    ${isSelesai ? 'Selesai' : 'Selesaikan'}
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } catch (error) {
+                console.error('Gagal mengambil data transaksi:', error);
+                tableBody.innerHTML = '<tr><td colspan="7" class="text-center">Tidak dapat mengambil data transaksi.</td></tr>';
+            }
+        }
+
+        // UPDATE 
+        async function updateStatus(id) {
+            if (!confirm('Tandai transaksi ini sebagai Selesai? Stok produk akan dikurangi.')) return;
+
+            try {
+                
+                const resTrx = await fetch(readUrl);
+                if (!resTrx.ok) throw new Error(`HTTP error! status: ${resTrx.status}`);
+                const dataTrx = await resTrx.json();
+                const trx = dataTrx.find(t => t.id_transaksi == id);
+                if (!trx) throw new Error('Transaksi tidak ditemukan');
+
+
+                const resProd = await fetch(`${produkDetailUrl}?id=${trx.id_produk}`);
+                if (!resProd.ok) throw new Error(`HTTP error! status: ${resProd.status}`);
+                const produk = await resProd.json();
+                if (!produk || !produk.nama_produk) throw new Error('Data produk tidak ditemukan');
+
+                const stokBaru = Number(produk.stok) - Number(trx.jumlah);
+                if (stokBaru < 0) {
+                    alert(`Stok tidak cukup. Stok tersedia: ${produk.stok}, dibutuhkan: ${trx.jumlah}`);
+                    return;
+                }
+
+                const resUpdProd = await fetch(produkUpdateUrl, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: produk.id,
+                        nama_produk: produk.nama_produk,
+                        jenis_produk: produk.jenis_produk,
+                        stok: stokBaru,
+                        harga_beli: produk.harga_beli,
+                        harga_jual: produk.harga_jual,
+                        status: produk.status
+                    })
+                });
+                if (!resUpdProd.ok) throw new Error(`HTTP error! status: ${resUpdProd.status}`);
+
+                const resUpdTrx = await fetch(updateUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id_transaksi: id })
+                });
+                if (!resUpdTrx.ok) throw new Error(`HTTP error! status: ${resUpdTrx.status}`);
+
+                alert('Transaksi selesai dan stok produk berhasil dikurangi!');
+                getTransaksi();
+            } catch (error) {
+                console.error('Gagal menyelesaikan transaksi:', error);
+                alert('Gagal menyelesaikan transaksi.');
+            }
+        }
+
+        // Tampilkan form
+        document.getElementById('addDataBtn').addEventListener('click', function () {
+            document.getElementById('addTransaksiForm').reset();
+            document.getElementById('formContainer').style.display = 'block';
+        });
+
+        document.getElementById('cancelBtn').addEventListener('click', function () {
+            document.getElementById('formContainer').style.display = 'none';
+        });
+
+        // CREATE
+        document.getElementById('addTransaksiForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const transaksiData = {
+                id_produk: document.getElementById('idProduk').value,
+                jumlah: document.getElementById('jumlah').value
+            };
+
+            try {
+                const response = await fetch(createUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(transaksiData)
+                });
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                alert('Transaksi berhasil ditambahkan!');
+                document.getElementById('formContainer').style.display = 'none';
+                getTransaksi();
+            } catch (error) {
+                console.error('Gagal menambahkan transaksi:', error);
+                alert('Gagal menambahkan transaksi.');
+            }
+        });
+
+        getTransaksi();
+    </script>
+</body>
+
+</html>
