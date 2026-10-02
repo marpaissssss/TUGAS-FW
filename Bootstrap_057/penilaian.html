@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SIAKAD - Transaksi Penilaian Mahasiswa</title>
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <style>
+        .badge-kode { display: inline-block; padding: .2rem .45rem; border: 1px solid #e3e6f0; border-radius: .25rem; background: #f8f9fc; color: #212529; font-size: .8rem; font-weight: 700; }
+        .badge-grade { padding: .6em .7em; font-size: .75rem; }
+        #dataTable thead th { background: #5a5c69; color: #fff; border-color: #6e707e; }
+        #dataTable td { vertical-align: middle; }
+        #printSlip { display: none; }
+        @media print {
+            body * { visibility: hidden; }
+            #printSlip, #printSlip * { visibility: visible; }
+            #printSlip { display: block; position: absolute; left: 0; top: 0; width: 100%; padding: 2rem; }
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="sidebar-brand-text mx-3">SIAKAD <sup>APP</sup></div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html"><i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Master Data</div>
+            <li class="nav-item">
+                <a class="nav-link" href="prodi.html"><i class="fas fa-fw fa-university"></i><span>Master Data Prodi</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="mahasiswa.html"><i class="fas fa-fw fa-user-graduate"></i><span>Master Data Mahasiswa</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Transaksi</div>
+            <li class="nav-item active">
+                <a class="nav-link" href="penilaian.html"><i class="fas fa-fw fa-calculator"></i><span>Transaksi Penilaian</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item no-arrow">
+                            <span class="nav-link">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Dosen Pengampuh, M.Kom</span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="container-fluid">
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-calculator text-primary mr-2"></i>Transaksi Penilaian Mahasiswa</h1>
+                        <button type="button" id="btnTambah" class="btn btn-primary shadow-sm font-weight-bold">
+                            <i class="fas fa-plus-circle mr-1"></i> Input Penilaian Baru
+                        </button>
+                    </div>
+
+                    <div id="alertArea"></div>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Rekapitulasi Nilai Akhir &amp; Grade Mahasiswa</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Kode TRX</th>
+                                            <th>NIM</th>
+                                            <th>Nama Mahasiswa</th>
+                                            <th>Mata Kuliah</th>
+                                            <th class="text-center">Tugas (30%)</th>
+                                            <th class="text-center">UTS (30%)</th>
+                                            <th class="text-center">UAS (40%)</th>
+                                            <th class="text-center">Nilai Akhir</th>
+                                            <th class="text-center">Grade</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>SIAKAD &copy; Transaksi Penilaian 2026</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+    <!-- Area cetak -->
+    <div id="printSlip"></div>
+
+    <!-- Modal Input / Edit -->
+    <div class="modal fade" id="modalNilai" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form class="modal-content" id="formNilai" novalidate>
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold text-primary" id="modalNilaiTitle">Input Penilaian Baru</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Tutup"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editKode">
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="kode">Kode TRX</label>
+                            <input type="text" class="form-control" id="kode" readonly>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="nim">Mahasiswa</label>
+                            <select class="form-control" id="nim" required></select>
+                            <div class="invalid-feedback">Pilih mahasiswa.</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="mk">Mata Kuliah</label>
+                        <select class="form-control" id="mk" required>
+                            <option value="">Pilih mata kuliah</option>
+                            <option>Pemrograman Web</option>
+                            <option>Basis Data</option>
+                            <option>Jaringan Komputer</option>
+                            <option>Kecerdasan Buatan</option>
+                            <option>Struktur Data</option>
+                            <option>Sistem Operasi</option>
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="tugas">Tugas (30%)</label>
+                            <input type="number" class="form-control nilai-input" id="tugas" min="0" max="100" step="1" required>
+                            <div class="invalid-feedback">Nilai 0–100.</div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="uts">UTS (30%)</label>
+                            <input type="number" class="form-control nilai-input" id="uts" min="0" max="100" step="1" required>
+                            <div class="invalid-feedback">Nilai 0–100.</div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="uas">UAS (40%)</label>
+                            <input type="number" class="form-control nilai-input" id="uas" min="0" max="100" step="1" required>
+                            <div class="invalid-feedback">Nilai 0–100.</div>
+                        </div>
+                    </div>
+                    <div class="alert alert-light border mb-0" id="preview">
+                        Nilai Akhir: <strong id="pvNilai">-</strong> &nbsp;|&nbsp; Grade: <span id="pvGrade">-</span> &nbsp;|&nbsp; Status: <span id="pvStatus">-</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary" type="submit"><i class="fas fa-save mr-1"></i> Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Hapus -->
+    <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold text-danger">Hapus Transaksi Penilaian?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Tutup"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Transaksi <strong id="hapusInfo"></strong> akan dihapus dan tidak bisa dikembalikan.
+                    <input type="hidden" id="hapusKode">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-danger" type="button" id="btnKonfirmasiHapus"><i class="fas fa-trash mr-1"></i> Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        var KEY = 'siakad_penilaian';
+        var MHS_KEY = 'siakad_mahasiswa_v2';
+        var MHS_SEED = [
+            { nim: '230101001', nama: 'Aditya Pratama' }, { nim: '230101002', nama: 'Siti Nurhaliza' },
+            { nim: '230102001', nama: 'Bagas Rahadian' }, { nim: '230103001', nama: 'Dewi Anggraini' },
+            { nim: '230104001', nama: 'Fajar Ramadan' }, { nim: '230101003', nama: 'Gita Savitri' },
+            { nim: '230102002', nama: 'Hendra Gunawan' }, { nim: '230103002', nama: 'Intan Permata' }
+        ];
+        var GRADE_CLS = { 'A': 'success', 'B+': 'primary', 'B': 'info', 'C': 'warning', 'D': 'danger', 'E': 'dark' };
+        var SEED = [
+            { kode: 'TRX-001', nim: '230101001', nama: 'Aditya Pratama', mk: 'Pemrograman Web', tugas: 85, uts: 80, uas: 90 },
+            { kode: 'TRX-002', nim: '230101002', nama: 'Siti Nurhaliza', mk: 'Pemrograman Web', tugas: 90, uts: 88, uas: 92 },
+            { kode: 'TRX-003', nim: '230102001', nama: 'Bagas Rahadian', mk: 'Basis Data', tugas: 75, uts: 70, uas: 68 },
+            { kode: 'TRX-004', nim: '230103001', nama: 'Dewi Anggraini', mk: 'Jaringan Komputer', tugas: 60, uts: 55, uas: 50 },
+            { kode: 'TRX-005', nim: '230104001', nama: 'Fajar Ramadan', mk: 'Kecerdasan Buatan', tugas: 88, uts: 85, uas: 90 }
+        ];
+
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+        // Nilai akhir = 30% tugas + 30% UTS + 40% UAS
+        function hitung(t, u, a) {
+            var n = Math.round((t * 30 + u * 30 + a * 40) / 10) / 10;
+            var g = n >= 85 ? 'A' : n >= 75 ? 'B+' : n >= 70 ? 'B' : n >= 60 ? 'C' : n >= 50 ? 'D' : 'E';
+            return { nilai: n, grade: g, status: n >= 60 ? 'Lulus' : 'Tidak Lulus' };
+        }
+        function enrich(r) { return $.extend(r, hitung(r.tugas, r.uts, r.uas)); }
+        function load() {
+            try { var s = localStorage.getItem(KEY); if (s) return JSON.parse(s); } catch (e) {}
+            return SEED.map(enrich);
+        }
+        function save() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+        function loadMhs() {
+            try { var s = localStorage.getItem(MHS_KEY); if (s) { var a = JSON.parse(s); if (a.length) return a; } } catch (e) {}
+            return MHS_SEED;
+        }
+        function notif(type, msg) {
+            var el = $('<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' + esc(msg) +
+                '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            $('#alertArea').html(el);
+            setTimeout(function () { el.alert('close'); }, 3500);
+        }
+        function gradeBadge(g) { return '<span class="badge badge-grade badge-' + (GRADE_CLS[g] || 'secondary') + '">' + esc(g) + '</span>'; }
+        function statusBadge(s) { return '<span class="badge badge-' + (s === 'Lulus' ? 'success' : 'danger') + '">' + esc(s) + '</span>'; }
+
+        var data = load();
+        var table;
+
+        $(function () {
+            table = $('#dataTable').DataTable({
+                data: data,
+                order: [[0, 'asc']],
+                columns: [
+                    { data: 'kode', render: function (d, t) { return t === 'display' ? '<span class="badge-kode">' + esc(d) + '</span>' : d; } },
+                    { data: 'nim' },
+                    { data: 'nama', render: function (d, t) { return t === 'display' ? '<span class="font-weight-bold text-gray-800">' + esc(d) + '</span>' : d; } },
+                    { data: 'mk' },
+                    { data: 'tugas', className: 'text-center' },
+                    { data: 'uts', className: 'text-center' },
+                    { data: 'uas', className: 'text-center' },
+                    { data: 'nilai', className: 'text-center', render: function (d, t) { return t === 'display' ? '<span class="font-weight-bold text-primary">' + Number(d).toFixed(1) + '</span>' : d; } },
+                    { data: 'grade', className: 'text-center', render: function (d, t) { return t === 'display' ? gradeBadge(d) : d; } },
+                    { data: 'status', className: 'text-center', render: function (d, t) { return t === 'display' ? statusBadge(d) : d; } },
+                    {
+                        data: null, className: 'text-center text-nowrap',
+                        render: function (d, t, row) {
+                            if (t !== 'display') return '';
+                            var k = esc(row.kode);
+                            return '<button class="btn btn-secondary btn-sm btn-cetak mr-1" data-kode="' + k + '" title="Cetak"><i class="fas fa-print"></i></button>' +
+                                '<button class="btn btn-info btn-sm btn-edit mr-1" data-kode="' + k + '" title="Edit"><i class="fas fa-edit"></i></button>' +
+                                '<button class="btn btn-danger btn-sm btn-hapus" data-kode="' + k + '" title="Hapus"><i class="fas fa-trash"></i></button>';
+                        }
+                    }
+                ]
+            });
+            if (/[?&]baru=1/.test(location.search)) openForm(null);
+        });
+
+        function refresh() { table.clear().rows.add(data).draw(false); }
+        function findTrx(kode) { return data.filter(function (r) { return r.kode === kode; })[0]; }
+        function nextKode() {
+            var max = 0;
+            data.forEach(function (r) { var n = parseInt(String(r.kode).replace(/\D/g, ''), 10) || 0; if (n > max) max = n; });
+            return 'TRX-' + ('00' + (max + 1)).slice(-3);
+        }
+
+        function updatePreview() {
+            var t = parseFloat($('#tugas').val()), u = parseFloat($('#uts').val()), a = parseFloat($('#uas').val());
+            if (isNaN(t) || isNaN(u) || isNaN(a)) { $('#pvNilai').text('-'); $('#pvGrade').text('-'); $('#pvStatus').text('-'); return; }
+            var h = hitung(t, u, a);
+            $('#pvNilai').text(h.nilai.toFixed(1));
+            $('#pvGrade').html(gradeBadge(h.grade));
+            $('#pvStatus').html(statusBadge(h.status));
+        }
+        $('.nilai-input').on('input', updatePreview);
+
+        function openForm(r) {
+            var f = $('#formNilai')[0];
+            f.reset();
+            $(f).removeClass('was-validated');
+            $('#mk')[0].setCustomValidity('');
+            var opts = '<option value="">Pilih mahasiswa</option>';
+            loadMhs().forEach(function (m) { opts += '<option value="' + esc(m.nim) + '">' + esc(m.nim) + ' — ' + esc(m.nama) + '</option>'; });
+            $('#nim').html(opts);
+            $('#editKode').val(r ? r.kode : '');
+            $('#kode').val(r ? r.kode : nextKode());
+            $('#modalNilaiTitle').text(r ? 'Edit Penilaian' : 'Input Penilaian Baru');
+            if (r) {
+                if (!$('#nim option[value="' + r.nim + '"]').length) $('#nim').append('<option value="' + esc(r.nim) + '">' + esc(r.nim) + ' — ' + esc(r.nama) + '</option>');
+                $('#nim').val(r.nim); $('#mk').val(r.mk);
+                $('#tugas').val(r.tugas); $('#uts').val(r.uts); $('#uas').val(r.uas);
+            }
+            updatePreview();
+            $('#modalNilai').modal('show');
+        }
+
+        $('#btnTambah').on('click', function () { openForm(null); });
+        $('#dataTable tbody').on('click', '.btn-edit', function () { openForm(findTrx($(this).data('kode').toString())); });
+        $('#dataTable tbody').on('click', '.btn-hapus', function () {
+            var r = findTrx($(this).data('kode').toString());
+            $('#hapusInfo').text(r.kode + ' — ' + r.nama + ' (' + r.mk + ')');
+            $('#hapusKode').val(r.kode);
+            $('#modalHapus').modal('show');
+        });
+        $('#dataTable tbody').on('click', '.btn-cetak', function () {
+            var r = findTrx($(this).data('kode').toString());
+            $('#printSlip').html(
+                '<h3 class="mb-1">SIAKAD APP</h3><h5 class="mb-4">Bukti Penilaian Mahasiswa</h5>' +
+                '<table class="table table-sm table-bordered" style="max-width:480px"><tbody>' +
+                '<tr><th>Kode TRX</th><td>' + esc(r.kode) + '</td></tr>' +
+                '<tr><th>NIM</th><td>' + esc(r.nim) + '</td></tr>' +
+                '<tr><th>Nama Mahasiswa</th><td>' + esc(r.nama) + '</td></tr>' +
+                '<tr><th>Mata Kuliah</th><td>' + esc(r.mk) + '</td></tr>' +
+                '<tr><th>Tugas (30%)</th><td>' + r.tugas + '</td></tr>' +
+                '<tr><th>UTS (30%)</th><td>' + r.uts + '</td></tr>' +
+                '<tr><th>UAS (40%)</th><td>' + r.uas + '</td></tr>' +
+                '<tr><th>Nilai Akhir</th><td><strong>' + Number(r.nilai).toFixed(1) + '</strong></td></tr>' +
+                '<tr><th>Grade</th><td>' + esc(r.grade) + '</td></tr>' +
+                '<tr><th>Status</th><td>' + esc(r.status) + '</td></tr></tbody></table>' +
+                '<p class="small text-muted">Dicetak pada ' + new Date().toLocaleDateString('id-ID') + '</p>');
+            window.print();
+        });
+
+        $('#formNilai').on('submit', function (e) {
+            e.preventDefault();
+            var nim = $('#nim').val(), mk = $('#mk').val(), orig = $('#editKode').val();
+            var dup = nim && mk && data.some(function (r) { return r.nim === nim && r.mk === mk && r.kode !== orig; });
+            $('#mk')[0].setCustomValidity(dup ? 'dup' : '');
+            $('#mk').next('.invalid-feedback').text(dup ? 'Nilai mata kuliah ini sudah diinput untuk mahasiswa tersebut.' : 'Pilih mata kuliah.');
+            this.classList.add('was-validated');
+            if (!this.checkValidity()) return;
+
+            var m = loadMhs().filter(function (x) { return x.nim === nim; })[0];
+            var old = orig ? findTrx(orig) : null;
+            var rec = enrich({
+                kode: $('#kode').val(),
+                nim: nim,
+                nama: m ? m.nama : (old ? old.nama : ''),
+                mk: mk,
+                tugas: parseFloat($('#tugas').val()),
+                uts: parseFloat($('#uts').val()),
+                uas: parseFloat($('#uas').val())
+            });
+            if (orig) {
+                data = data.map(function (r) { return r.kode === orig ? rec : r; });
+                notif('success', 'Penilaian ' + rec.kode + ' berhasil diperbarui.');
+            } else {
+                data.push(rec);
+                notif('success', 'Penilaian ' + rec.kode + ' untuk ' + rec.nama + ' berhasil disimpan.');
+            }
+            save(); refresh();
+            $('#modalNilai').modal('hide');
+        });
+
+        $('#btnKonfirmasiHapus').on('click', function () {
+            var kode = $('#hapusKode').val();
+            data = data.filter(function (r) { return r.kode !== kode; });
+            save(); refresh();
+            $('#modalHapus').modal('hide');
+            notif('danger', 'Transaksi ' + kode + ' berhasil dihapus.');
+        });
+    </script>
+</body>
+
+</html>

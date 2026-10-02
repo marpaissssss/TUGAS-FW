@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>SIAKAD - Master Data Program Studi</title>
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <style>
+        .badge-kode { display: inline-block; padding: .2rem .45rem; border: 1px solid #e3e6f0; border-radius: .25rem; background: #f8f9fc; color: #4e73df; font-size: .8rem; font-weight: 600; }
+        #dataTable thead th { background: #5a5c69; color: #fff; border-color: #6e707e; }
+        #dataTable td { vertical-align: middle; }
+        #dataTable thead th { white-space: nowrap; }
+    </style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+                <div class="sidebar-brand-icon"><i class="fas fa-graduation-cap"></i></div>
+                <div class="sidebar-brand-text mx-3">SIAKAD <sup>APP</sup></div>
+            </a>
+            <hr class="sidebar-divider my-0">
+            <li class="nav-item">
+                <a class="nav-link" href="index.html"><i class="fas fa-fw fa-tachometer-alt"></i><span>Dashboard</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Master Data</div>
+            <li class="nav-item active">
+                <a class="nav-link" href="prodi.html"><i class="fas fa-fw fa-university"></i><span>Master Data Prodi</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="mahasiswa.html"><i class="fas fa-fw fa-user-graduate"></i><span>Master Data Mahasiswa</span></a>
+            </li>
+            <hr class="sidebar-divider">
+            <div class="sidebar-heading">Transaksi</div>
+            <li class="nav-item">
+                <a class="nav-link" href="penilaian.html"><i class="fas fa-fw fa-calculator"></i><span>Transaksi Penilaian</span></a>
+            </li>
+            <hr class="sidebar-divider d-none d-md-block">
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+        </ul>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item no-arrow">
+                            <span class="nav-link">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Dr. Dosen Pengampuh, M.Kom</span>
+                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+
+                <div class="container-fluid">
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800"><i class="fas fa-university mr-2" style="color:#224abe"></i>Master Data Program Studi</h1>
+                        <button type="button" id="btnTambah" class="btn btn-primary shadow-sm font-weight-bold">
+                            <i class="fas fa-plus-circle mr-1"></i> Tambah Prodi Baru
+                        </button>
+                    </div>
+
+                    <div id="alertArea"></div>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Daftar Program Studi / Jurusan</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-hover" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Kode Prodi</th>
+                                            <th>Nama Program Studi</th>
+                                            <th>Jenjang</th>
+                                            <th>Ketua Program Studi (Kaprodi)</th>
+                                            <th>Akreditasi</th>
+                                            <th>Mahasiswa Aktif</th>
+                                            <th class="text-center">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>SIAKAD &copy; Master Data Program Studi 2026</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top"><i class="fas fa-angle-up"></i></a>
+
+    <!-- Modal Tambah / Edit -->
+    <div class="modal fade" id="modalProdi" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <form class="modal-content" id="formProdi" novalidate>
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title font-weight-bold" id="modalProdiTitle">Form Program Studi</h5>
+                    <button class="close text-white" type="button" data-dismiss="modal" aria-label="Tutup" style="opacity:.8">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editKode">
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="kode" class="font-weight-bold">Kode Prodi</label>
+                            <input type="text" class="form-control text-uppercase" id="kode"
+                                   placeholder="Contoh: PR001" pattern="[A-Za-z0-9]{3,10}" maxlength="10" required>
+                            <div class="invalid-feedback"></div>
+                        </div>
+                        <div class="form-group col-md-8">
+                            <label for="nama" class="font-weight-bold">Nama Program Studi</label>
+                            <input type="text" class="form-control" id="nama"
+                                   placeholder="Contoh: Teknik Informatika" maxlength="60" required>
+                            <div class="invalid-feedback">Nama program studi wajib diisi.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-4">
+                            <label for="jenjang" class="font-weight-bold">Jenjang Studi</label>
+                            <select class="form-control" id="jenjang" required>
+                                <option value="S1">S1 - Sarjana</option>
+                                <option value="D4">D4 - Sarjana Terapan</option>
+                                <option value="D3">D3 - Diploma Tiga</option>
+                                <option value="S2">S2 - Magister</option>
+                            </select>
+                        </div>
+                        <div class="form-group col-md-5">
+                            <label for="kaprodi" class="font-weight-bold">Ketua Program Studi (Kaprodi)</label>
+                            <input type="text" class="form-control" id="kaprodi"
+                                   placeholder="Nama &amp; Gelar Dosen" maxlength="60" required>
+                            <div class="invalid-feedback">Nama kaprodi wajib diisi.</div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="akreditasi" class="font-weight-bold">Akreditasi</label>
+                            <select class="form-control" id="akreditasi" required>
+                                <option>Unggul</option>
+                                <option>Baik Sekali</option>
+                                <option>Baik</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-primary font-weight-bold" type="submit">
+                        <i class="fas fa-save mr-1"></i> Simpan Data
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Hapus -->
+    <div class="modal fade" id="modalHapus" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title font-weight-bold text-danger">Hapus Program Studi?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Tutup"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    Data <strong id="hapusNama"></strong> akan dihapus dan tidak bisa dikembalikan.
+                    <input type="hidden" id="hapusKode">
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
+                    <button class="btn btn-danger" type="button" id="btnKonfirmasiHapus"><i class="fas fa-trash mr-1"></i> Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        var KEY = 'siakad_prodi';
+        var SEED = [
+            { kode: 'PR001', nama: 'Teknik Informatika', jenjang: 'S1', kaprodi: 'Dr. Budi Santoso, M.Kom', akreditasi: 'Unggul', aktif: 120 },
+            { kode: 'PR002', nama: 'Sistem Informasi', jenjang: 'S1', kaprodi: 'Siti Aminah, M.T.', akreditasi: 'Baik Sekali', aktif: 95 },
+            { kode: 'PR003', nama: 'Teknologi Informasi', jenjang: 'D3', kaprodi: 'Ahmad Dahlan, M.Sc', akreditasi: 'Baik', aktif: 60 },
+            { kode: 'PR004', nama: 'Sains Data', jenjang: 'S1', kaprodi: 'Dr. Retno Wulandari, M.Si', akreditasi: 'Unggul', aktif: 45 }
+        ];
+        var JENJANG_CLS = { 'S1': 'info', 'D3': 'secondary', 'D4': 'dark', 'S2': 'primary' };
+        var AKRED_CLS = { 'Unggul': 'success', 'Baik Sekali': 'primary', 'Baik': 'primary' };
+
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+        function badge(cls, d) { return '<span class="badge badge-' + (cls[d] || 'secondary') + '">' + esc(d) + '</span>'; }
+        function load() {
+            try { var s = localStorage.getItem(KEY); if (s) return JSON.parse(s); } catch (e) {}
+            return SEED.slice();
+        }
+        function save() { try { localStorage.setItem(KEY, JSON.stringify(data)); } catch (e) {} }
+        function notif(type, msg) {
+            var el = $('<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' + esc(msg) +
+                '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            $('#alertArea').html(el);
+            setTimeout(function () { el.alert('close'); }, 3500);
+        }
+
+        var data = load();
+        var table;
+
+        $(function () {
+            table = $('#dataTable').DataTable({
+                data: data,
+                order: [[0, 'asc']],
+                columns: [
+                    { data: null, defaultContent: '' },
+                    { data: 'kode', render: function (d, t) { return t === 'display' ? '<span class="badge-kode">' + esc(d) + '</span>' : d; } },
+                    { data: 'nama', render: function (d, t) { return t === 'display' ? '<span class="font-weight-bold text-gray-800">' + esc(d) + '</span>' : d; } },
+                    { data: 'jenjang', render: function (d, t) { return t === 'display' ? badge(JENJANG_CLS, d) : d; } },
+                    { data: 'kaprodi' },
+                    { data: 'akreditasi', render: function (d, t) { return t === 'display' ? badge(AKRED_CLS, d) : d; } },
+                    { data: 'aktif', render: function (d, t) { return t === 'display' ? '<span class="font-weight-bold text-gray-800">' + d + '</span> Mahasiswa' : d; } },
+                    {
+                        data: null, className: 'text-center text-nowrap',
+                        render: function (d, t, row) {
+                            if (t !== 'display') return '';
+                            var k = esc(row.kode);
+                            return '<button class="btn btn-info btn-sm btn-edit mr-1" data-kode="' + k + '" title="Edit"><i class="fas fa-edit"></i></button>' +
+                                '<button class="btn btn-danger btn-sm btn-hapus" data-kode="' + k + '" title="Hapus"><i class="fas fa-trash"></i></button>';
+                        }
+                    }
+                ],
+                drawCallback: function () {
+                    var api = this.api(), start = api.page.info().start;
+                    api.column(0, { page: 'current' }).nodes().each(function (cell, i) { cell.textContent = start + i + 1; });
+                }
+            });
+        });
+
+        function refresh() { table.clear().rows.add(data).draw(false); }
+        function findProdi(kode) { return data.filter(function (p) { return p.kode === kode; })[0]; }
+
+        function openForm(p) {
+            var f = $('#formProdi')[0];
+            f.reset();
+            $(f).removeClass('was-validated');
+            $('#kode')[0].setCustomValidity('');
+            $('#editKode').val(p ? p.kode : '');
+            if (p) {
+                $('#kode').val(p.kode); $('#nama').val(p.nama); $('#jenjang').val(p.jenjang);
+                $('#kaprodi').val(p.kaprodi); $('#akreditasi').val(p.akreditasi);
+            }
+            $('#modalProdi').modal('show');
+        }
+
+        $('#btnTambah').on('click', function () { openForm(null); });
+        $('#dataTable tbody').on('click', '.btn-edit', function () { openForm(findProdi($(this).data('kode').toString())); });
+        $('#dataTable tbody').on('click', '.btn-hapus', function () {
+            var p = findProdi($(this).data('kode').toString());
+            $('#hapusNama').text(p.nama + ' (' + p.kode + ')');
+            $('#hapusKode').val(p.kode);
+            $('#modalHapus').modal('show');
+        });
+
+        $('#formProdi').on('submit', function (e) {
+            e.preventDefault();
+            var kodeEl = $('#kode')[0], kode = kodeEl.value.trim().toUpperCase(), orig = $('#editKode').val();
+            var dup = data.some(function (p) { return p.kode === kode && p.kode !== orig; });
+            kodeEl.setCustomValidity(dup ? 'dup' : '');
+            $('#kode').next('.invalid-feedback').text(dup ? 'Kode prodi sudah terdaftar.' : 'Kode wajib diisi (3–10 huruf/angka).');
+            this.classList.add('was-validated');
+            if (!this.checkValidity()) return;
+
+            var lama = orig ? findProdi(orig) : null;
+            var rec = {
+                kode: kode,
+                nama: $('#nama').val().trim(),
+                jenjang: $('#jenjang').val(),
+                kaprodi: $('#kaprodi').val().trim(),
+                akreditasi: $('#akreditasi').val(),
+                aktif: lama ? lama.aktif : 0
+            };
+            if (orig) {
+                data = data.map(function (p) { return p.kode === orig ? rec : p; });
+                notif('success', 'Data ' + rec.nama + ' berhasil diperbarui.');
+            } else {
+                data.push(rec);
+                notif('success', 'Program studi ' + rec.nama + ' berhasil ditambahkan.');
+            }
+            save(); refresh();
+            $('#modalProdi').modal('hide');
+        });
+
+        $('#btnKonfirmasiHapus').on('click', function () {
+            var kode = $('#hapusKode').val(), p = findProdi(kode);
+            data = data.filter(function (x) { return x.kode !== kode; });
+            save(); refresh();
+            $('#modalHapus').modal('hide');
+            notif('danger', 'Data ' + (p ? p.nama : '') + ' berhasil dihapus.');
+        });
+    </script>
+</body>
+
+</html>
