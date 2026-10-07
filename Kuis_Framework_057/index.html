@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rental PS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+:root{--bs-primary:#2563eb;--bs-primary-rgb:37,99,235;--bs-body-font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;--navy:#0b1b3f;--navy2:#13285a;--ink:#14213d;--mut:#64748b;--line:#e3eaf6}
+body{background:#eef3fc;color:var(--ink);font-size:.925rem}
+.btn{border-radius:.7rem;font-weight:600}
+.btn-primary{--bs-btn-bg:#2563eb;--bs-btn-border-color:#2563eb;--bs-btn-hover-bg:#1d4ed8;--bs-btn-hover-border-color:#1d4ed8;--bs-btn-active-bg:#1e40af;--bs-btn-active-border-color:#1e40af;--bs-btn-disabled-bg:#2563eb;--bs-btn-disabled-border-color:#2563eb}
+.form-control,.form-select{border-radius:.7rem;border-color:#d5dff0;padding:.55rem .8rem}
+.form-control:focus,.form-select:focus{border-color:#2563eb;box-shadow:0 0 0 .22rem rgba(37,99,235,.15)}
+.form-label{font-weight:600;font-size:.85rem;color:#3d4f75}
+.shell{display:flex;min-height:100vh}
+.sidebar{width:262px;flex:none}
+@media(min-width:992px){.sidebar{position:sticky;top:0;height:100vh}}
+.side-in{background:var(--navy);height:100%;display:flex;flex-direction:column;gap:1.5rem;padding:1.4rem 1rem;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:.75rem;padding:.2rem .5rem}
+.logo{width:42px;height:42px;border-radius:12px;background:#2563eb;display:grid;place-items:center;color:#fff;font-size:1.3rem;box-shadow:0 6px 16px rgba(37,99,235,.45)}
+.brand b{display:block;color:#fff;font-size:1.05rem;line-height:1.15}
+.brand small{color:#8fa6d6}
+.side-in .nav-link{color:#b7c6e8;border-radius:.8rem;padding:.7rem .9rem;display:flex;align-items:center;gap:.7rem;font-weight:600}
+.side-in .nav-link:hover{background:rgba(255,255,255,.07);color:#fff}
+.side-in .nav-link.active{background:#2563eb;color:#fff;box-shadow:0 6px 16px rgba(37,99,235,.35)}
+.api-card{margin-top:auto;background:var(--navy2);border-radius:.9rem;padding:.8rem .9rem;display:flex;gap:.7rem;align-items:center;font-size:.76rem;color:#8fa6d6}
+.api-card i{font-size:1.2rem;color:#5fa0ff}
+.api-card span{display:block;color:#fff;word-break:break-all}
+.content{flex:1;min-width:0}
+.mtop{background:#fff;border-bottom:1px solid var(--line);padding:.6rem 1rem;display:flex;align-items:center;gap:.7rem}
+.banner{position:relative;overflow:hidden;border-radius:1.2rem;color:#fff;padding:1.6rem 1.6rem 4.4rem;background:linear-gradient(120deg,#1e3a8a 0%,#2563eb 60%,#4f8df7 100%)}
+.banner::after{content:'';position:absolute;right:-60px;top:-90px;width:290px;height:290px;border-radius:50%;background:rgba(255,255,255,.1)}
+.banner::before{content:'';position:absolute;right:130px;bottom:-120px;width:210px;height:210px;border-radius:50%;background:rgba(255,255,255,.07)}
+.banner>*{position:relative;z-index:1}
+.banner h1{font-weight:800;letter-spacing:-.02em}
+.banner .sub{color:#d6e4ff}
+.banner-ic{width:54px;height:54px;border-radius:15px;background:rgba(255,255,255,.18);display:grid;place-items:center;font-size:1.6rem}
+.stat{background:#fff;border-radius:1rem;padding:1rem 1.1rem;display:flex;align-items:center;gap:.9rem;box-shadow:0 8px 24px rgba(30,64,175,.1)}
+.stat-ic{width:46px;height:46px;border-radius:12px;background:#e8f0ff;color:#2563eb;display:grid;place-items:center;font-size:1.3rem}
+.stat-v{font-size:1.5rem;font-weight:800;line-height:1.1}
+.stat-l{color:var(--mut);font-size:.8rem}
+.panel{background:#fff;border-radius:1.1rem;box-shadow:0 8px 24px rgba(30,64,175,.07);overflow:hidden}
+.panel-head{display:flex;flex-wrap:wrap;gap:.6rem;justify-content:space-between;align-items:center;padding:1rem 1.2rem;border-bottom:1px solid var(--line)}
+.search{position:relative;flex:1;max-width:340px}
+.search i{position:absolute;left:.9rem;top:50%;transform:translateY(-50%);color:#8aa0c8}
+.search input{padding-left:2.4rem;background:#f5f8ff}
+.table-wrap{overflow-x:auto}
+.table{--bs-table-hover-bg:#f3f7ff;margin:0}
+.table thead th{background:#f5f8ff;color:#5b6f94;font-weight:700;font-size:.8rem;white-space:nowrap;border-bottom:1px solid var(--line);padding:.8rem 1rem}
+.table td{padding:.8rem 1rem;border-color:#edf2fb}
+.ava{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:.78rem;font-weight:700;flex:none}
+.a0{background:#dbe8ff;color:#1d4ed8}.a1{background:#d4f1fb;color:#0e7490}.a2{background:#e0e7ff;color:#4338ca}.a3{background:#cfe3ff;color:#1e3a8a}
+.pill{display:inline-flex;align-items:center;gap:.4rem;padding:.25rem .65rem;border-radius:2rem;font-size:.78rem;font-weight:600}
+.pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
+.pill-success{background:#dcf5e7;color:#15803d}.pill-warning{background:#fff1d6;color:#b45309}.pill-primary{background:#dbe8ff;color:#1d4ed8}.pill-secondary{background:#eaeef6;color:#5b6b86}
+.btn-i{width:34px;height:34px;padding:0;border:0;border-radius:.6rem;background:#f1f5fd;color:#52658c;display:inline-grid;place-items:center;cursor:pointer}
+.btn-i:hover{background:#dbe8ff;color:#1d4ed8}
+.btn-i-blue{color:#2563eb}.btn-i-red{color:#dc2626}.btn-i-red:hover{background:#fde2e2;color:#b91c1c}
+.modal-content{border:0;border-radius:1.2rem;box-shadow:0 20px 60px rgba(11,27,63,.25)}
+.modal-header,.modal-footer{border-color:var(--line)}
+.modal-title{font-weight:800}
+#alerts .alert{border:0;border-radius:.8rem}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar offcanvas-lg offcanvas-start" id="side" tabindex="-1">
+    <div class="side-in">
+      <div class="brand"><span class="logo"><i class="bi bi-joystick"></i></span><div><b>Rental PS</b><small>Admin</small></div></div>
+      <ul class="nav flex-column gap-1" id="nav"></ul>
+      <div class="api-card"><i class="bi bi-hdd-network"></i><div>Terhubung ke<span id="base"></span></div></div>
+    </div>
+  </aside>
+  <div class="content">
+    <header class="mtop d-lg-none"><button class="btn btn-light" data-bs-toggle="offcanvas" data-bs-target="#side" aria-label="Menu"><i class="bi bi-list"></i></button><b>Rental PS</b></header>
+    <main class="p-3 p-lg-4">
+      <section class="banner">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div class="d-flex align-items-center gap-3"><span class="banner-ic"><i class="bi" id="ico"></i></span><div><h1 class="h3 mb-1" id="title"></h1><div class="sub" id="sub"></div></div></div>
+          <button class="btn btn-light text-primary text-nowrap" id="btnAdd"></button>
+        </div>
+      </section>
+      <section class="panel">
+        <div class="panel-head">
+          <div class="search"><i class="bi bi-search"></i><input id="q" class="form-control" placeholder="Cari data..." aria-label="Cari data"></div>
+          <button class="btn btn-light border" id="btnRefresh"><i class="bi bi-arrow-clockwise me-1"></i>Refresh Data</button>
+        </div>
+        <div class="table-wrap" id="tbl"></div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div id="alerts"></div>
+
+<div class="modal fade" id="mForm" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <form class="modal-content" id="form">
+      <div class="modal-header"><h2 class="modal-title h5" id="fTitle"></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button></div>
+      <div class="modal-body"><div class="row g-3" id="fBody"></div></div>
+      <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Batal</button><button class="btn btn-primary" id="btnSave">Simpan</button></div>
+    </form>
+  </div>
+</div>
+
+<div class="modal fade" id="mDetail" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header"><h2 class="modal-title h5" id="dTitle"></h2><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button></div>
+      <div class="modal-body" id="dBody"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const BASE_URL = 'https://api.melangkah.my.id';
+
+const $ = s => document.querySelector(s);
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today = new Date().toLocaleDateString('sv-SE');
+const rid = r => r.id_unit ?? r.id_transaksi ?? r.id_mahasiswa ?? r.id_transaksi_sewa ?? r.id ?? r._id ?? r.uuid;
+const pick = (list, id, fn) => { const x = list.find(r => rid(r) == id); return x ? fn(x) : id; };
+const mhsLabel = r => `${r.nim} - ${r.nama}`;
+
+function badge(v) {
+  const c = {tersedia:'success', baik:'success', dikembalikan:'success', pending:'warning', disewa:'primary'}[String(v ?? '').toLowerCase()] || 'secondary';
+  return `<span class="pill pill-${c}">${esc(v)}</span>`;
+}
+/* ---------- Konfigurasi modul: kolom tabel & field form ---------- */
+const MOD = {
+  unit: {
+    title:'Master Unit PS', noun:'unit', add:'Tambah Unit PS', icon:'bi-playstation', path:'unit', idKey:'id_unit', full:true,
+    cols:[['nama_unit','Nama unit'],['tipe_ps','Tipe PS'],['harga_per_jam','Harga per Jam'],['status','Status',r=>badge(r.status)]],
+    fields:[
+      {k:'nama_unit',l:'Nama unit',req:1},
+      {k:'tipe_ps',l:'Tipe PS',o:['PS3','PS4','PS5'],req:1},
+      {k:'harga_per_jam',l:'Harga per Jam',t:'number',req:1,d:0},
+      {k:'status',l:'Status',o:['Tersedia','Disewa'],d:'Tersedia'}]
+  },
+  transaksi_sewa: {
+    title:'Transaksi Penyewaan PS', noun:'transaksi_sewa', add:'Sewa PS Baru', icon:'bi-play', path:'transaksi_sewa', idKey:'id_transaksi_sewa', full:false,
+    cols:[
+      ['id_unit','Unit',r=>esc(r.nama_unit || pick(cache.unit, r.id_unit, a=>a.nama_unit))],
+      ['nama_penyewa','Nama Penyewa'],['durasi_jam','Durasi (jam)']],
+    fields:[
+      {k:'id_unit',l:'Unit',ref:'unit',lab:a=>`${a.nama_unit} (durasi ${a.harga_per_jam} / jam)`,req:1},
+        {k:'nama_penyewa',l:'Nama Penyewa',req:1},
+        {k:'durasi_jam',l:'Durasi (jam)',t:'number',req:1,d:1},]
+      
+  }
+};
+
+/* ---------- Helper API ---------- */
+async function api(path, {method='GET', body, q} = {}) {
+  const url = `${BASE_URL}/${path}` + (q ? '?' + new URLSearchParams(q) : '');
+  const res = await fetch(url, {method, headers: body ? {'Content-Type':'application/json'} : {}, body: body ? JSON.stringify(body) : undefined});
+  const txt = await res.text();
+  let j; try { j = JSON.parse(txt); } catch { j = {message: txt.slice(0, 200)}; }
+  const bad = !res.ok || j.success === false || j.status === false || ['error','failed','fail'].includes(j.status) || (typeof j.status === 'number' && j.status >= 400);
+  if (bad) throw new Error(j.message || j.error || `Permintaan gagal (HTTP ${res.status})`);
+  return j;
+}
+// Respons API dibaca fleksibel: array langsung, atau di dalam data/records/result
+const rows = j => {
+  if (Array.isArray(j)) return j;
+  for (const k of ['data','records','result','results']) if (Array.isArray(j?.[k])) return j[k];
+  return Object.values(j || {}).find(Array.isArray) || [];
+};
+const one = j => { let d = j?.data ?? j; if (Array.isArray(d)) d = d[0]; return d || {}; };
+
+/* ---------- State & tampilan ---------- */
+const cache = {unit:[], transaksi_sewa:[]};
+const err = {};
+let cur, editId = null;
+const fm = new bootstrap.Modal('#mForm'), dm = new bootstrap.Modal('#mDetail');
+
+function toast(msg, t='success') {
+  const d = document.createElement('div');
+  d.className = `alert alert-${t} shadow-sm py-2`;
+  d.textContent = msg;
+  $('#alerts').append(d);
+  setTimeout(() => d.remove(), 4500);
+}
+
+async function load(n) {
+  try { err[n] = ''; cache[n] = rows(await api(`${MOD[n].path}/read.php`)); }
+  catch (e) {
+    cache[n] = [];
+    err[n] = e.message === 'Failed to fetch' ? 'Tidak dapat terhubung ke API. Periksa koneksi internet atau pengaturan CORS server.' : e.message;
+  }
+}
+
+async function show(n) {
+  if (!MOD[n]) n = 'unit';
+  cur = n; const m = MOD[n];
+  document.querySelectorAll('#nav .nav-link').forEach(a => a.classList.toggle('active', a.dataset.n === n));
+  $('#title').textContent = m.title; $('#ico').className = 'bi ' + m.icon; $('#sub').textContent = m.sub;
+  $('#btnAdd').innerHTML = `<i class="bi bi-plus-lg me-1"></i>${m.add}`;
+  $('#q').value = '';
+  $('#tbl').innerHTML = '<div class="p-5 text-center"><div class="spinner-border text-primary"></div></div>';
+  await Promise.all([load(n), ...(n === 'transaksi_sewa' ? [load('unit')] : [])]);
+  if (cur === n) draw();
+}
+
+function cell(t) {
+  const p = t.replace(/<[^>]*>/g, '').trim();
+  const ini = p.split(/\s+/).slice(0, 2).map(w => w[0] || '').join('').toUpperCase();
+  return `<div class="d-flex align-items-center gap-2"><span class="ava a${(p.charCodeAt(0) || 0) % 4}">${ini}</span><span class="fw-semibold">${t}</span></div>`;
+}
+
+function draw() {
+  const m = MOD[cur], q = $('#q').value.toLowerCase();
+  if (err[cur]) { $('#tbl').innerHTML = `<div class="p-4 text-danger"><i class="bi bi-exclamation-triangle me-2"></i>${esc(err[cur])}</div>`; return; }
+  const list = cache[cur].map((r, i) => [r, i]).filter(([r]) => JSON.stringify(r).toLowerCase().includes(q));
+  const acts = i => `<button class="btn-i" onclick="detail(${i})" title="Detail"><i class="bi bi-eye"></i></button>` +
+    (m.full ? ` <button class="btn-i btn-i-blue" onclick="openForm(${i})" title="Edit"><i class="bi bi-pencil"></i></button>
+                <button class="btn-i btn-i-red" onclick="del(${i})" title="Hapus"><i class="bi bi-trash"></i></button>` : '');
+  const empty = q ? 'Data tidak ditemukan.' : `Belum ada data. Klik "${m.add}" untuk menambah.`;
+  $('#tbl').innerHTML = `<table class="table table-hover align-middle mb-0"><thead class="table-light"><tr><th>No</th>${m.cols.map(c => `<th>${c[1]}</th>`).join('')}<th class="text-end">Aksi</th></tr></thead><tbody>` +
+    (list.length ? list.map(([r, i], n) => `<tr><td>${n + 1}</td>${m.cols.map((c, ci) => { const t = c[2] ? c[2](r) : esc(r[c[0]]); return `<td>${ci ? t : cell(t)}</td>`; }).join('')}<td class="text-end text-nowrap">${acts(i)}</td></tr>`).join('')
+                 : `<tr><td colspan="${m.cols.length + 2}" class="text-center text-secondary py-5"><i class="bi bi-inbox fs-1 d-block mb-2 opacity-50"></i>${empty}</td></tr>`) + '</tbody></table>';
+}
+
+/* ---------- Form tambah / edit ---------- */
+function field(f, v) {
+  let h;
+  if (f.ref) {
+    h = `<select class="form-select" name="${f.k}" required><option value="">Pilih...</option>` +
+      cache[f.ref].map(r => `<option value="${esc(rid(r))}"${rid(r) == v ? ' selected' : ''}>${esc(f.lab(r))}</option>`).join('') + '</select>';
+  } else if (f.t === 'textarea') {
+    h = `<textarea class="form-control" name="${f.k}" rows="2">${esc(v)}</textarea>`;
+  } else {
+    if (f.t === 'date') v = String(v ?? '').slice(0, 10);
+    h = `<input class="form-control" type="${f.t || 'text'}" name="${f.k}" value="${esc(v)}"${f.req ? ' required' : ''}${f.t === 'number' ? ' min="0"' : ''}${f.o ? ` list="dl_${f.k}"` : ''}>` +
+      (f.o ? `<datalist id="dl_${f.k}">${f.o.map(o => `<option value="${o}">`).join('')}</datalist>` : '');
+  }
+  return `<div class="${f.w || 'col-md-6'}"><label class="form-label">${f.l}${f.req || f.ref ? ' <span class="text-danger">*</span>' : ''}</label>${h}</div>`;
+}
+
+function openForm(i) {
+  const m = MOD[cur], r = i == null ? null : cache[cur][i];
+  editId = r ? (r[m.idKey] ?? r.id) : null;
+  $('#fTitle').textContent = (r ? 'Edit ' : 'Tambah ') + m.noun;
+  $('#fBody').innerHTML = m.fields.map(f => field(f, r ? r[f.k] : f.d)).join('');
+  fm.show();
+}
+
+$('#form').onsubmit = async e => {
+  e.preventDefault();
+  const m = MOD[cur], fd = new FormData(e.target), body = {};
+  m.fields.forEach(f => { const v = fd.get(f.k); body[f.k] = (f.t === 'number' || f.ref) ? (v === '' ? null : Number(v)) : v; });
+  if (editId != null) body[m.idKey] = isNaN(editId) ? editId : Number(editId);
+  const b = $('#btnSave'); b.disabled = true;
+  try {
+    const j = await api(`${m.path}/${editId != null ? 'update' : 'create'}.php`, {method:'POST', body});
+    fm.hide(); toast(j.message || 'Data berhasil disimpan.');
+    await load(cur); draw();
+  } catch (x) { toast(x.message, 'danger'); }
+  finally { b.disabled = false; }
+};
+
+/* ---------- Hapus & detail ---------- */
+async function del(i) {
+  const m = MOD[cur], r = cache[cur][i], id = r[m.idKey] ?? r.id_unit;
+  if (!confirm(`Hapus ${m.noun} ini?`)) return;
+  try {
+    const j = await api(`${m.path}/delete.php`, {method:'DELETE', q:{[m.idKey]: id}});
+    toast(j.message || 'Data berhasil dihapus.');
+    await load(cur); draw();
+  } catch (x) { toast(x.message, 'danger'); }
+}
+
+async function detail(i) {
+  const m = MOD[cur], r = cache[cur][i], id_unit = r[m.idKey] ?? r.id_unit;
+  let d = r;
+  try { const x = one(await api(`${m.path}/detail.php`, {q:{[m.idKey]: id_unit}})); if (Object.keys(x).length) d = x; } catch (e) {}
+  $('#dTitle').textContent = 'Detail ' + m.noun;
+  $('#dBody').innerHTML = '<table class="table table-sm mb-0">' +
+    Object.entries(d).map(([k, v]) => `<tr><th class="text-secondary fw-normal" style="width:40%">${esc(k.replace(/_/g, ' '))}</th><td>${esc(v)}</td></tr>`).join('') + '</table>';
+  dm.show();
+}
+
+/* ---------- Mulai ---------- */
+$('#nav').innerHTML = Object.entries(MOD).map(([k, m]) => `<li class="nav-item"><a class="nav-link" data-n="${k}" href="#${k}"><i class="bi ${m.icon} me-1"></i>${m.title}</a></li>`).join('');
+$('#base').textContent = BASE_URL;
+$('#q').oninput = draw;
+$('#btnRefresh').onclick = () => show(cur);
+$('#btnAdd').onclick = () => openForm();
+window.onhashchange = () => { bootstrap.Offcanvas.getInstance('#side')?.hide(); show(location.hash.slice(1)); };
+show(location.hash.slice(1));
+</script>
+</body>
+</html>

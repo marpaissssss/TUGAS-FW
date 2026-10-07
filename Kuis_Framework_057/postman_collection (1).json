@@ -1,0 +1,289 @@
+{
+	"info": {
+		"_postman_id": "api-praktikum-collection-v1",
+		"name": "API Praktikum & Rental PS",
+		"description": "Postman collection untuk API Master Asset, Master Mahasiswa, Rental PlayStation (Unit & Transaksi), Master Produk, dan Transaksi Peminjaman.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://api.melangkah.my.id",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Rental PS - Master Unit",	
+			"item": [
+				{
+					"name": "Read All Unit PS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/unit/read.php",
+							"host": ["{{base_url}}"],
+							"path": ["unit", "read.php"]
+						}
+					}
+				},
+				{
+					"name": "Detail Unit PS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/unit/detail.php?id=1",
+							"host": ["{{base_url}}"],
+							"path": ["unit", "detail.php"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Unit PS",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nama_unit\": \"PS5 - Room VIP 2\",\n  \"tipe_ps\": \"PS5\",\n  \"harga_per_jam\": 25000,\n  \"status\": \"Tersedia\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/unit/create.php",
+							"host": ["{{base_url}}"],
+							"path": ["unit", "create.php"]
+						}
+					}
+				},
+				{
+					"name": "Update Unit PS",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_unit\": 1,\n  \"nama_unit\": \"PS5 - Room VIP 1 (Updated)\",\n  \"tipe_ps\": \"PS5\",\n  \"harga_per_jam\": 22000,\n  \"status\": \"Tersedia\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/unit/update.php",
+							"host": ["{{base_url}}"],
+							"path": ["unit", "update.php"]
+						}
+					}
+				},
+				{
+					"name": "Delete Unit PS",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_unit\": 4\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/unit/delete.php?id=4",
+							"host": ["{{base_url}}"],
+							"path": ["unit", "delete.php"],
+							"query": [
+								{
+									"key": "id",
+									"value": "4"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Rental PS - Transaksi Sewa",
+			"item": [
+				{
+					"name": "Read All Transaksi Sewa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transaksi_sewa/read.php",
+							"host": ["{{base_url}}"],
+							"path": ["transaksi_sewa", "read.php"]
+						}
+					}
+				},
+				{
+					"name": "Detail Transaksi Sewa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/transaksi_sewa/detail.php?id=1",
+							"host": ["{{base_url}}"],
+							"path": ["transaksi_sewa", "detail.php"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Create Transaksi Sewa",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_unit\": 1,\n  \"nama_penyewa\": \"Rizky Ramadhan\",\n  \"durasi_jam\": 3\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/transaksi_sewa/create.php",
+							"host": ["{{base_url}}"],
+							"path": ["transaksi_sewa", "create.php"]
+						}
+					}
+				},
+				{
+					"name": "Update Transaksi Sewa (Selesai/Batal)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_transaksi\": 1,\n  \"status_transaksi\": \"Selesai\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/transaksi_sewa/update.php",
+							"host": ["{{base_url}}"],
+							"path": ["transaksi_sewa", "update.php"]
+						}
+					}
+				},
+				{
+					"name": "Delete Transaksi Sewa",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"id_transaksi\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/transaksi_sewa/delete.php",
+							"host": ["{{base_url}}"],
+							"path": ["transaksi_sewa", "delete.php"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Master Asset",
+			"item": [
+				{
+					"name": "Read All Asset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/asset/read.php",
+							"host": ["{{base_url}}"],
+							"path": ["asset", "read.php"]
+						}
+					}
+				},
+				{
+					"name": "Detail Asset",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/asset/detail.php?id=1",
+							"host": ["{{base_url}}"],
+							"path": ["asset", "detail.php"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Master Mahasiswa",
+			"item": [
+				{
+					"name": "Read All Mahasiswa",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/mahasiswa/read.php",
+							"host": ["{{base_url}}"],
+							"path": ["mahasiswa", "read.php"]
+						}
+					}
+				},
+				{
+					"name": "Detail Mahasiswa by ID / NIM",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/mahasiswa/detail.php?id=1",
+							"host": ["{{base_url}}"],
+							"path": ["mahasiswa", "detail.php"],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	]
+}
