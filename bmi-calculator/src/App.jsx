@@ -1,4 +1,4 @@
-import Bmi from './components/bmi';
+import Bmi from './components/Bmi';
 
 function App() {
   return (
